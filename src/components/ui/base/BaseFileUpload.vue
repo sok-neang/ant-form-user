@@ -1,0 +1,125 @@
+<template>
+  <div class="base-file-upload">
+    <label v-if="label" class="form-label">{{ label }}</label>
+    <div 
+      class="upload-dropzone"
+      :class="{ 'is-invalid': error, 'is-dragover': isDragOver }"
+      @dragover.prevent="isDragOver = true"
+      @dragleave.prevent="isDragOver = false"
+      @drop.prevent="handleDrop"
+      @click="triggerFileInput"
+    >
+      <input 
+        type="file" 
+        ref="fileInput" 
+        class="d-none" 
+        :accept="accept"
+        @change="handleFileChange" 
+      />
+      <div class="upload-content text-center">
+        <i class="bi bi-cloud-arrow-up fs-2 text-primary mb-2"></i>
+        <div class="upload-text">
+          <span class="text-primary fw-semibold text-decoration-underline me-1">ចុចទីនេះ</span> 
+          <span>ដើម្បីបញ្ជូលឯកសារ</span>
+        </div>
+        <div v-if="fileName" class="mt-2 text-success fw-semibold">
+          {{ fileName }}
+        </div>
+      </div>
+    </div>
+    <p v-if="rule" class="text-muted mt-3">{{ rule }}</p>
+    <div v-if="error" class="invalid-feedback mt-2 d-flex align-items-center">
+        <i class="bi bi-exclamation-circle-fill me-1" style="font-size: 13px !important"></i> {{ error }}
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, watch, onMounted } from 'vue';
+
+const props = defineProps({
+  modelValue: { type: [File, String, Object], default: null },
+  label: String,
+  error: String,
+  accept: { type: String, default: "image/*,.pdf" },
+  rule: { type: String, default: "" }
+});
+
+const emit = defineEmits(['update:modelValue', 'change']);
+
+const fileInput = ref(null);
+const isDragOver = ref(false);
+const fileName = ref('');
+
+const updateFileName = (val) => {
+  if (!val) {
+    fileName.value = '';
+  } else if (val instanceof File) {
+    fileName.value = val.name;
+  } else if (typeof val === 'string') {
+    const parts = val.split('/');
+    fileName.value = parts[parts.length - 1] || 'Uploaded File';
+  } else if (val.name) {
+    fileName.value = val.name;
+  } else {
+    fileName.value = 'Uploaded File';
+  }
+};
+
+watch(() => props.modelValue, (newVal) => {
+  updateFileName(newVal);
+});
+
+onMounted(() => {
+  updateFileName(props.modelValue);
+});
+
+const triggerFileInput = () => {
+  fileInput.value.click();
+};
+
+const processFile = (file) => {
+  if (file) {
+    fileName.value = file.name;
+    emit('update:modelValue', file);
+    emit('change', file);
+  }
+};
+
+const handleFileChange = (e) => {
+  const file = e.target.files[0];
+  processFile(file);
+};
+
+const handleDrop = (e) => {
+  isDragOver.value = false;
+  const file = e.dataTransfer.files[0];
+  processFile(file);
+};
+</script>
+
+<style scoped>
+.form-label {
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 0.5rem;
+}
+.upload-dropzone {
+  border: 1px dashed var(--border-color-primary);
+  border-radius: 8px;
+  padding: 2rem 1rem;
+  background-color: var(--bg-body, #f4f4f4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.upload-dropzone:hover, .upload-dropzone.is-dragover {
+  border-color: var(--primary-color, #357867);
+  background-color: var(--hover-color, #eff3ff61);
+}
+.upload-dropzone.is-invalid {
+  border-color: #dc3545;
+}
+.text-primary {
+  color: var(--primary-color, #357867) !important;
+}
+</style>

@@ -1,0 +1,176 @@
+@font-face {
+  font-family: "Kantumruy Pro";
+  src: url("../assets/fonts/kantumruy_pro/KantumruyPro-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/inter/Inter_24pt-Regular.ttf") format("truetype");
+}
+
+:root{
+  /* Base color */
+  --primary-color: #357867;
+  --primary-color-600: #2ab896;
+  --secondary-color: #FFB31F;
+  --error-color: #DC3545;
+
+  /* Text */
+  --heading-color: #474A52;
+  --text-base: #202020;
+  --text-primary: #357867;
+  --text-muted: #757575;
+
+  /* Border */
+  --border-color-gray: #D9D9D9;
+  --border-color-primary: #49c5a6;
+  --border-input: #98A2B3;
+
+  /* Shadow */
+  --card-shadow: 0px 25px 50px 0px rgba(0, 0, 0, 0.15);
+  --shadow-primary: 0 0 0 .25rem rgba(67, 180, 152, 0.381);
+  --shadow-error: 0 0 0 .25rem rgba(220, 53, 69, 0.15);
+  /* Background */
+  --bg-card: #ffffff;
+  --bg-body: #F3F6F6;
+  --bg-body-700: #e4ebff;
+  --hover-color: #eff3ff61;
+}
+
+/* -------------------------------------------- */
+/* GLOBAL STYLES */
+/* -------------------------------------------- */
+
+body {
+  font-family: "Kantumruy Pro", sans-serif !important;
+  background-color: var(--bg-body);
+  color: var(--color-text); 
+}
+
+h1,h2,h3,h4,h5,h6{
+  color:var(--heading-color);
+}
+
+p{
+  color: var(--text-base);
+  font-size: 17px !important;
+  font-weight: 460 !important;
+}
+
+.lh-md{
+  line-height: 1.5 !important;
+}
+
+.text-muted{
+  color: var(--text-muted) !important;
+}
+
+/* -------------------------------------------- */
+/* FORM INPUT VALIDATE */
+/* -------------------------------------------- */
+
+.form-control:not(:disabled) {
+  border: 1.5px solid var(--border-input) !important;
+}
+
+.form-control:focus{
+  box-shadow: var(--shadow-primary) !important;
+  border-color: var(--border-color-primary) !important;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--error-color);
+}
+
+.is-invalid {
+  border-color: var(--error-color) !important;
+}
+
+.is-invalid:focus,
+.is-invalid:focus-visible,
+.is-invalid.is-open {
+  box-shadow: var(--shadow-error) !important;
+  border-color: var(--error-color) !important;
+}
+
+.form-control.is-invalid{
+  background-image: none;
+}
+
+/* button */
+
+.btn-custom{
+    border-radius: 8px;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 10px 20px;
+    height: 50px;
+    border: none;
+    font-weight: 500;
+}
+.btn-custom:hover{
+    background: var(--secondary-color);
+    border: none;
+    color: #fff;
+}
+.btn-custom:focus{
+    border: none;
+    box-shadow: none;
+}
+
+/* -------------------------------------------- */
+/* ELEMENT PLUS PREMIUM OVERRIDES */
+/* -------------------------------------------- */
+
+:root {
+  --el-color-primary: #357867 !important;
+  --el-color-primary-light-3: #5b9284 !important;
+  --el-color-primary-light-5: #85aba1 !important;
+  --el-color-primary-light-7: #b0c6c0 !important;
+  --el-color-primary-light-8: #c6d6d2 !important;
+  --el-color-primary-light-9: #ebf1ef !important;
+  --el-border-radius-base: 8px !important;
+}
+
+.el-picker-panel {
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.12) !important;
+  font-family: "Kantumruy Pro", "Inter", sans-serif !important;
+  padding: 8px !important;
+}
+
+.el-date-picker__header-label {
+  font-weight: 600 !important;
+  color: var(--heading-color) !important;
+  font-size: 16px !important;
+}
+
+.el-date-table td.today .el-date-table-cell__text {
+  color: var(--primary-color) !important;
+  font-weight: bold;
+}
+
+.el-date-table td.current:not(.disabled) .el-date-table-cell__text {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+  border-radius: 50% !important;
+}
+
+.el-date-table td.available:hover .el-date-table-cell__text {
+  background-color: var(--el-color-primary-light-9) !important;
+  color: var(--primary-color) !important;
+  border-radius: 50% !important;
+}
+
+.el-date-table th {
+  color: var(--text-muted) !important;
+  font-weight: 500 !important;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
