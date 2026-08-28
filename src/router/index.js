@@ -15,7 +15,7 @@ const router = createRouter({
 
   routes: [
     {
-      path: "/form",
+      path: "/form-request",
       name: "form-request",
       component: FormRequest,
       meta: {

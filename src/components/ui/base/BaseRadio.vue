@@ -1,10 +1,11 @@
 <template>
   <div class="base-radio">
     <div class="form-check">
-      <input 
+      <input
         class="form-check-input"
-        type="radio" 
-        :id="id" 
+        :class="{ 'is-invalid': error }"
+        type="radio"
+        :id="id"
         :name="name"
         :value="value"
         :checked="modelValue === value"
@@ -15,24 +16,32 @@
         {{ label }}
       </label>
     </div>
-    <div v-if="error" class="invalid-feedback mt-2 d-flex align-items-center">
-        <i class="bi bi-exclamation-circle-fill me-1" style="font-size: 13px !important"></i> {{ error }}
+    <div
+      v-if="error && showErrorMessage"
+      class="invalid-feedback mt-2 d-flex align-items-center"
+    >
+      <i
+        class="bi bi-exclamation-circle-fill me-1"
+        style="font-size: 13px !important"
+      ></i>
+      {{ error }}
     </div>
   </div>
 </template>
 
 <script setup>
 const props = defineProps({
-  modelValue: { type: [String, Number, Boolean], default: '' },
+  modelValue: { type: [String, Number, Boolean], default: "" },
   value: { type: [String, Number, Boolean], required: true },
   label: String,
   name: String,
   id: String,
   error: String,
-  disabled: { type: Boolean, default: false }
+  disabled: { type: Boolean, default: false },
+  showErrorMessage: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <style scoped>
@@ -60,8 +69,8 @@ const emit = defineEmits(['update:modelValue']);
   margin: 0;
 }
 
-.form-check-input:focus{
-    box-shadow: var(--shadow-primary) !important;
+.form-check-input:focus {
+  box-shadow: var(--shadow-primary) !important;
 }
 
 .form-check-input:hover:not(:disabled) {
@@ -100,7 +109,7 @@ const emit = defineEmits(['update:modelValue']);
 .form-check-label {
   margin-left: 8px;
   font-size: 16px;
-  color: var(--text-base);
+  color: var(--text-base) !important;
   cursor: pointer;
 }
 </style>

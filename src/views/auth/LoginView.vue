@@ -3,9 +3,8 @@
     <div class="login-container">
       <div class="card login-card">
         <div class="card-body text-center">
-
           <div class="logo-section mb-4">
-            <img :src="ant_logo" alt="ANT Logo" width="150"/>
+            <img :src="ant_logo" alt="ANT Logo" width="150" />
           </div>
 
           <h3 class="form-title fw-semibold mb-3">
@@ -16,15 +15,23 @@
             ចូលប្រើប្រាស់គណនី Google របស់អ្នកដើម្បីបន្ត
           </p>
 
-          <div v-if="alert.message"
-            :class="['alert', alert.type === 'success'? 'alert-success': 'alert-danger']" role="alert">
+          <div
+            v-if="alert.message"
+            :class="[
+              'alert',
+              alert.type === 'success' ? 'alert-success' : 'alert-danger',
+            ]"
+            role="alert"
+          >
             {{ alert.message }}
           </div>
 
-          <div class="google-section d-flex justify-content-center align-items-center">
+          <div
+            class="google-section d-flex justify-content-center align-items-center"
+          >
             <div class="custom-google-wrapper">
               <button class="custom-google-btn">
-                <img :src="google_img" width="25" class="me-2" alt="">
+                <img :src="google_img" width="25" class="me-2" alt="" />
                 បន្តជាមួយ Google
               </button>
               <div ref="googleButton" class="google-button-invisible"></div>
@@ -43,7 +50,7 @@
 
 <script setup>
 import ant_logo from "@/assets/images/ANT.png";
-import google_img from "@/assets/images/google.png"
+import google_img from "@/assets/images/google.png";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
@@ -61,13 +68,15 @@ const alert = ref({
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 function showAlert(message, type = "error") {
-  alert.value = {message,type};
+  alert.value = { message, type };
 }
 
 async function handleGoogleLogin(response) {
-  console.log(response)
+  console.log(response);
   if (!response?.credential) {
-    showAlert("Google sign-in failed. Please try again.");
+    showAlert(
+      "ការចូលប្រើប្រាស់គណនី Google មិនបានជោគជ័យ សូមព្យាយាមចូលប្រើប្រាស់គណនីផ្សេងទៀត"
+    );
     return;
   }
   try {
@@ -76,20 +85,21 @@ async function handleGoogleLogin(response) {
     showAlert(res.message);
     alert.value.type = "success";
 
-    setTimeout(() => {router.push("/form")}, 800);
-
+    setTimeout(() => {
+      router.push("/form-request");
+    }, 800);
   } catch (error) {
-    showAlert(error?.message || "An error occurred");
+    showAlert("ការចូលប្រើប្រាស់គណនី Google មិនបានជោគជ័យ។​ សូមព្យាយាមម្តងទៀត។");
   }
 }
 
 function initializeGoogle() {
   if (!GOOGLE_CLIENT_ID) {
-    showAlert("Google Login is not configured.")
+    showAlert("Google Login មិនបានកំណត់");
     return;
   }
   if (!window.google) {
-    setTimeout(initializeGoogle ,500);
+    setTimeout(initializeGoogle, 500);
     return;
   }
 
@@ -100,16 +110,13 @@ function initializeGoogle() {
   });
 
   if (googleButton.value) {
-    window.google.accounts.id.renderButton(
-      googleButton.value,
-      {
-        theme: "outline",
-        size: "large",
-        text: "continue_with",
-        shape: "pill",
-        width: 250,
-      }
-    );
+    window.google.accounts.id.renderButton(googleButton.value, {
+      theme: "outline",
+      size: "large",
+      text: "continue_with",
+      shape: "pill",
+      width: 250,
+    });
   }
 }
 
@@ -126,7 +133,6 @@ onMounted(() => {
 
     script.onload = initializeGoogle;
     document.head.appendChild(script);
-
   } else {
     initializeGoogle();
   }
@@ -139,8 +145,11 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background:
-  linear-gradient(110deg,var(--primary-color, #357867) 50%,#ffffff 50%);
+  background: linear-gradient(
+    110deg,
+    var(--primary-color, #357867) 50%,
+    #ffffff 50%
+  );
   padding: 1rem;
 }
 
@@ -189,8 +198,8 @@ onMounted(() => {
   height: 100%;
   background-color: #ffffff;
   border: 1px solid #dadce0;
-  border-radius: 20px; 
-  font-family: 'Kantumruy Pro', sans-serif;
+  border-radius: 20px;
+  font-family: "Kantumruy Pro", sans-serif;
   font-size: 14px;
   font-weight: 500;
   color: #3c4043;
