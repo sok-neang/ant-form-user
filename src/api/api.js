@@ -1,7 +1,5 @@
 import axios from "axios";
-import { useAuthStore } from "@/stores/auth";
-import router from "@/router/index.js";
-
+import router from "@/router";
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
@@ -16,20 +14,21 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
-});
+}
+);
 
-// Handle 401/403
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      const authStore = useAuthStore();
-      authStore.setTokenExpired(true);
-      localStorage.removeItem("token");
-      router.push({ name: "expired-link" });
+    if (error.response.status === 401) {
+      if(localStorage.getItem("token")){
+        router.push({name:"expired-link"})
+      }else{
+        router.push({name:"login"})
+      }
     }
     return Promise.reject(error);
   }
-);
+)
 
 export default api;

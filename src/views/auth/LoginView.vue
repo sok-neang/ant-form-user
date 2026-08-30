@@ -87,7 +87,7 @@ async function handleGoogleLogin(response) {
 
     setTimeout(() => {
       router.push("/form-request");
-    }, 800);
+    }, 1500);
   } catch (error) {
     showAlert("ការចូលប្រើប្រាស់គណនី Google មិនបានជោគជ័យ។​ សូមព្យាយាមម្តងទៀត។");
   }

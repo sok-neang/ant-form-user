@@ -113,9 +113,7 @@ export function useFormValidationLogic(formData) {
         
         await submissionsStore.Final_Submission(payload);
         console.log("Form Data Submitted");
-        if (router) {
-          router.push({ name: 'form-submitted' });
-        }
+        router.push({ name: 'form-submitted' });
       } catch (error) {
         console.error("Submission failed", error);
         alert("ការបញ្ជូនទិន្នន័យមិនបានជោគជ័យទេ។ សូមព្យាយាមម្តងទៀត។");

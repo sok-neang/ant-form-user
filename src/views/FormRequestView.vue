@@ -388,14 +388,10 @@ onMounted(async () => {
   } catch (error) {
     console.error("Failed to load form data:", error);
 
-    // Handle 403 Forbidden - likely means submission is already submitted
-    if (error.status === 403) {
-      console.log("Submission already submitted, redirecting to resubmit page");
-      router.push({ name: "form-resubmit" });
+    if (error.status === 403 || error.status === 400) {
+      router.push({ name: "form-submitted" });
       return;
     }
-
-    // Other errors will be handled by API interceptor
   }
 });
 

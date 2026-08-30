@@ -99,7 +99,6 @@ export function useFormSubmissionLogic() {
       formData.agreedToAttendancePolicy = submission?.agreedToAttendancePolicy || false;
       formData.agreedToEligibilityPolicy = submission?.agreedToEligibilityPolicy || false;
 
-      // Only set narrative fields if narrative exists
       if (narrative) {
         formData.strengths = narrative.strengths || '';
         formData.weaknesses = narrative.weaknesses || '';
