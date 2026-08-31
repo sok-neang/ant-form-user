@@ -17,13 +17,17 @@
         @change="handleFileChange" 
       />
       <div class="upload-content text-center">
-        <i class="bi bi-cloud-arrow-up fs-2 text-primary mb-2"></i>
-        <div class="upload-text">
-          <span class="text-primary fw-semibold text-decoration-underline me-1">ចុចទីនេះ</span> 
-          <span>ដើម្បីបញ្ជូលឯកសារ</span>
-        </div>
-        <div v-if="fileName" class="mt-2 text-success fw-semibold">
-          {{ fileName }}
+        <template v-if="!fileName">
+          <i class="bi bi-cloud-arrow-up fs-2 text-primary mb-2"></i>
+          <div class="upload-text">
+            <span class="text-primary fw-semibold text-decoration-underline me-1">ចុចទីនេះ</span> 
+            <span>ដើម្បីបញ្ជូលឯកសារ</span>
+          </div>
+        </template>
+        <div v-else class="d-inline-flex align-items-center bg-white border rounded px-3 py-2 text-dark shadow-sm" @click.stop>
+          <i class="bi bi-file-earmark-text text-danger me-2"></i>
+          <span class="me-3">{{ fileName }}</span>
+          <button type="button" class="btn-close ms-auto" style="font-size: 0.75rem;" @click.stop="handleRemove"></button>
         </div>
       </div>
     </div>
@@ -42,10 +46,11 @@ const props = defineProps({
   label: String,
   error: String,
   accept: { type: String, default: "image/*,.pdf" },
-  rule: { type: String, default: "" }
+  rule: { type: String, default: "" },
+  customFileName: { type: String, default: "ឯកសារដែលបានបញ្ជូល" }
 });
 
-const emit = defineEmits(['update:modelValue', 'change']);
+const emit = defineEmits(['update:modelValue', 'change', 'remove']);
 
 const fileInput = ref(null);
 const isDragOver = ref(false);
@@ -58,7 +63,9 @@ const updateFileName = (val) => {
     fileName.value = val.name;
   } else if (typeof val === 'string') {
     const parts = val.split('/');
-    fileName.value = parts[parts.length - 1] || 'Uploaded File';
+    const fileStr = parts[parts.length - 1] || '';
+    const ext = fileStr.includes('.') ? fileStr.substring(fileStr.lastIndexOf('.')) : '';
+    fileName.value = props.customFileName + ext;
   } else if (val.name) {
     fileName.value = val.name;
   } else {
@@ -95,6 +102,16 @@ const handleDrop = (e) => {
   isDragOver.value = false;
   const file = e.dataTransfer.files[0];
   processFile(file);
+};
+
+const handleRemove = () => {
+  fileName.value = '';
+  if (fileInput.value) {
+    fileInput.value.value = '';
+  }
+  emit('remove');
+  emit('update:modelValue', null);
+  emit('change', null);
 };
 </script>
 

@@ -129,12 +129,12 @@
               </div>
               <div class="col-12 mb-5">
                 <BaseSelect
-                  v-model="formData.universityOther"
+                  v-model="formData.universityId"
                   :label="questions[8].text"
                   :options="questions[8].options"
-                  :error="errors.universityOther"
+                  :error="errors.universityId"
                   clearable
-                  @blur="handleValidate('universityOther')"
+                  @blur="handleValidate('universityId')"
                 />
               </div>
               <div class="col-12 mb-5">
@@ -166,6 +166,7 @@
                   @change="
                     (file) => handleFileUpload('transcript', 'TRANSCRIPT', file)
                   "
+                  @remove="() => handleFileRemove('transcript', 'TRANSCRIPT')"
                 />
               </div>
               <div class="col-12 mb-5">
@@ -297,6 +298,7 @@
                   :error="errors.photo"
                   :rule="questions[24].rule"
                   @change="(file) => handleFileUpload('photo', 'PHOTO', file)"
+                  @remove="() => handleFileRemove('photo', 'PHOTO')"
                 />
               </div>
               <div class="col-12 mb-5">
@@ -371,25 +373,41 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useSubmissionsStore } from "@/stores/submissions";
+import { useUniversitiesStore } from "@/stores/universities";
 import bannerImage from "@/assets/images/banner.png";
-import { questions } from "@/constants/formQuestions";
+import { questions as staticQuestions } from "@/constants/formQuestions";
 import { useFormSubmissionLogic } from "@/composables/useFormSubmissionLogic";
 import { useFormValidationLogic } from "@/composables/useFormValidationLogic";
 
 const submissionsStore = useSubmissionsStore();
+const universitiesStore = useUniversitiesStore();
 const router = useRouter();
+
+const questions = ref(staticQuestions);
 
 onMounted(async () => {
   try {
+    await universitiesStore.fetchUniversities();
+    if (universitiesStore.universities.length > 0) {
+      questions.value[8].options = universitiesStore.universities.map(u => ({
+        label: u.name,
+        value: u.id
+      }));
+    }
+    
     await submissionsStore.GetForm_DraftData();
   } catch (error) {
     console.error("Failed to load form data:", error);
 
-    if (error.status === 403 || error.status === 400) {
+    if (error.status === 400) {
       router.push({ name: "form-submitted" });
+      return;
+    }
+    if (error.status === 403) {
+      router.push({ name: "form-resubmit" });
       return;
     }
   }
@@ -397,7 +415,7 @@ onMounted(async () => {
 
 const { formData } = useFormSubmissionLogic();
 
-const { errors, handleValidate, handleFileUpload, handleSubmit } =
+const { errors, handleValidate, handleFileUpload, handleFileRemove, handleSubmit } =
   useFormValidationLogic(formData);
 </script>
 

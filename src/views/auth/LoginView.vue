@@ -73,12 +73,6 @@ function showAlert(message, type = "error") {
 
 async function handleGoogleLogin(response) {
   console.log(response);
-  if (!response?.credential) {
-    showAlert(
-      "ការចូលប្រើប្រាស់គណនី Google មិនបានជោគជ័យ សូមព្យាយាមចូលប្រើប្រាស់គណនីផ្សេងទៀត"
-    );
-    return;
-  }
   try {
     alert.value.message = "";
     const res = await authStore.GoogleLogin(response.credential);
@@ -89,7 +83,7 @@ async function handleGoogleLogin(response) {
       router.push("/form-request");
     }, 1500);
   } catch (error) {
-    showAlert("ការចូលប្រើប្រាស់គណនី Google មិនបានជោគជ័យ។​ សូមព្យាយាមម្តងទៀត។");
+    showAlert("គណនី Google ត្រូវបានប្រើប្រាស់ សូមព្យាយាមចូលប្រើប្រាស់គណនីផ្សេងទៀត");
   }
 }
 

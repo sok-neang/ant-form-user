@@ -7,6 +7,7 @@ import NotFound from "@/views/error/NotFoundView.vue"
 
 import FormRequest from "@/views/FormRequestView.vue"
 import FormSubmitted from "@/views/SubmittedView.vue"
+import FormResubmit from "@/views/ResubmitView.vue"
 
 
 const router = createRouter({
@@ -27,6 +28,14 @@ const router = createRouter({
       component: FormSubmitted,
       meta: {
         title: "Form Submitted",
+      },
+    },
+    {
+      path: "/form-resubmit",
+      name: "form-resubmit",
+      component: FormResubmit,
+      meta: {
+        title: "Form Resubmit",
       },
     },
 

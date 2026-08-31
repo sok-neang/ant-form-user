@@ -3,6 +3,7 @@ import { ref } from "vue";
 import api from "@/api/api";
 
 export const useSubmissionsStore = defineStore("submissions", () => {
+  const isSubmitted = ref(false);
   const student_info = ref({});
   const isGetFormLoading = ref(false);
   const isSubmitFormLoading = ref(false);
@@ -60,6 +61,21 @@ export const useSubmissionsStore = defineStore("submissions", () => {
     try {
       isSubmitFormLoading.value = true;
       const response = await api.post("submissions", agreementData);
+      isSubmitted.value = true;
+      
+      return response.data?.data;
+    } catch (error) {
+      throw error.response || error;
+    } finally {
+      isSubmitFormLoading.value = false;
+    }
+  };
+
+
+    const Delete_File = async (id) => {
+    try {
+      isSubmitFormLoading.value = true;
+      const response = await api.delete(`submissions/draft/files/${id}`);
       return response.data?.data;
     } catch (error) {
       throw error.response || error;
@@ -69,6 +85,7 @@ export const useSubmissionsStore = defineStore("submissions", () => {
   };
 
   return {
+    isSubmitted,
     student_info,
     isGetFormLoading,
     isSubmitFormLoading,
@@ -78,5 +95,6 @@ export const useSubmissionsStore = defineStore("submissions", () => {
     Update_Submission,
     File_Submission,
     Final_Submission,
+    Delete_File,
   };
 });

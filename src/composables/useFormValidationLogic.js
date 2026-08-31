@@ -1,14 +1,34 @@
 import { useRequiredValidator } from "@/composables/validators/useRequiredValidator";
+import { useEmailValidator } from "@/composables/validators/useEmailValidator";
 import { useSubmissionsStore } from "@/stores/submissions";
 import { useRouter } from 'vue-router';
+import { watch } from 'vue';
 
 export function useFormValidationLogic(formData) {
   const submissionsStore = useSubmissionsStore();
   const router = useRouter();
   const { errors, validateField } = useRequiredValidator();
+  const { validateEmail } = useEmailValidator();
+
+  watch(formData, (newVal) => {
+    Object.keys(errors).forEach(key => {
+      if (errors[key] && newVal[key]) {
+        if (Array.isArray(newVal[key])) {
+          if (newVal[key].length > 0) errors[key] = '';
+        } else {
+          errors[key] = '';
+        }
+      }
+    });
+  }, { deep: true });
 
   const handleValidate = (field, msg = 'សូមបំពេញព័ត៌មាននេះ') => {
-    validateField(field, formData[field], msg);
+    if (field === 'email') {
+      const emailResult = validateEmail(formData[field]);
+      errors[field] = emailResult.isValid ? "" : emailResult.message;
+      return emailResult.isValid;
+    }
+    return validateField(field, formData[field], msg);
   };
 
   const handleFileUpload = async (field, fileType, file) => {
@@ -19,12 +39,43 @@ export function useFormValidationLogic(formData) {
     try {
       const formDataObj = new FormData();
       formDataObj.append('file', file);
-      formDataObj.append('fileType', fileType); 
-      
-      await submissionsStore.File_Submission(formDataObj);
+      formDataObj.append('fileType', fileType);
+
+      const result = await submissionsStore.File_Submission(formDataObj);
+      if (result) {
+        await submissionsStore.GetForm_DraftData();
+      }
       console.log(`${fileType} auto-saved successfully`);
     } catch (error) {
+      if (error.response.message.includes("Invalid file type")) {
+        errors[field] = "សូមបញ្ជូលឯកសារជាទម្រង់ PDF, JPG, PNG ឬ WEBP ប៉ុណ្ណោះ";
+        formData[field] = null;
+        return;
+      }
+      if (error.response.message.includes("File too large")) {
+        errors[field] = "ឯកសារមានទំហំធំពេក។ ទំហំអតិបរមាគឺ 10MB។";
+        formData[field] = null;
+        return;
+      }
       console.error(`Failed to auto-save ${fileType}`, error);
+    }
+  };
+
+  const handleFileRemove = async (field, fileType) => {
+    try {
+      const files = submissionsStore.student_info?.files || [];
+      const file = files.find(f => f.fileType === fileType);
+      
+      if (file && file.id) {
+        await submissionsStore.Delete_File(file.id);
+        submissionsStore.student_info.files = files.filter(f => f.id !== file.id);
+      }
+      
+      formData[field] = null;
+      errors[field] = field === 'photo' ? 'សូមបញ្ជូលរូបភាព' : 'សូមបញ្ជូលឯកសារ';
+    } catch (error) {
+      console.error(`Failed to delete ${fileType}`, error);
+      alert("ការលុបឯកសារមិនបានជោគជ័យទេ។");
     }
   };
 
@@ -32,7 +83,7 @@ export function useFormValidationLogic(formData) {
     let isValid = true;
     const reqMsg = 'សូមបំពេញព័ត៌មាននេះ';
     const agreeMsg = 'សូមយល់ព្រម';
-    
+
     const fields = [
       { f: 'phone', m: reqMsg },
       { f: 'telegramUsername', m: reqMsg },
@@ -42,7 +93,7 @@ export function useFormValidationLogic(formData) {
       { f: 'gender', m: reqMsg },
       { f: 'dateOfBirth', m: reqMsg },
       { f: 'educationLevel', m: reqMsg },
-      { f: 'universityOther', m: reqMsg },
+      { f: 'universityId', m: reqMsg },
       { f: 'yearOfStudy', m: reqMsg },
       { f: 'semester', m: reqMsg },
       { f: 'transcript', m: 'សូមបញ្ជូលឯកសារ' },
@@ -66,7 +117,7 @@ export function useFormValidationLogic(formData) {
     ];
 
     fields.forEach(({ f, m }) => {
-      if (!validateField(f, formData[f], m)) {
+      if (!handleValidate(f, m)) {
         isValid = false;
       }
     });
@@ -110,12 +161,12 @@ export function useFormValidationLogic(formData) {
           agreedToAttendancePolicy: formData.agreedToAttendancePolicy,
           agreedToEligibilityPolicy: formData.agreedToEligibilityPolicy
         };
-        
+
         await submissionsStore.Final_Submission(payload);
         console.log("Form Data Submitted");
+        console.log(submissionsStore.isSubmitted)
         router.push({ name: 'form-submitted' });
       } catch (error) {
-        console.error("Submission failed", error);
         alert("ការបញ្ជូនទិន្នន័យមិនបានជោគជ័យទេ។ សូមព្យាយាមម្តងទៀត។");
       }
     } else {
@@ -132,6 +183,7 @@ export function useFormValidationLogic(formData) {
     errors,
     handleValidate,
     handleFileUpload,
+    handleFileRemove,
     handleSubmit
   };
 }

@@ -3,6 +3,7 @@ import { useSubmissionsStore } from "@/stores/submissions";
 
 export async function authGuard(to) {
     const authStore = useAuthStore();
+    const submissionsStore = useSubmissionsStore();
 
     // if not authenticated and trying to go to protected routes, go to login
     if (!authStore.isAuthenticated && to.name !== "login" && to.name !== "expired-link") {
@@ -20,7 +21,5 @@ export async function authGuard(to) {
     }
 
     return true;
-
-    
 
 }

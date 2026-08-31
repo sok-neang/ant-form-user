@@ -79,7 +79,7 @@ export function useFormSubmissionLogic() {
       formData.email = student.email || '';
       formData.khName = student.khName || '';
       formData.enName = student.enName || '';
-      formData.gender = student.gender ? student.gender.toLowerCase() : '';
+      formData.gender = student.gender ? student.gender.toUpperCase() : '';
       formData.dateOfBirth = student.dateOfBirth ? student.dateOfBirth.split('T')[0] : '';
       formData.address = student.address || '';
       formData.photo = photoFile ? photoFile.fileUrl : null;
