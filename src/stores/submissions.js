@@ -3,7 +3,6 @@ import { ref } from "vue";
 import api from "@/api/api";
 
 export const useSubmissionsStore = defineStore("submissions", () => {
-  const isSubmitted = ref(false);
   const student_info = ref({});
   const isGetFormLoading = ref(false);
   const isSubmitFormLoading = ref(false);
@@ -61,7 +60,6 @@ export const useSubmissionsStore = defineStore("submissions", () => {
     try {
       isSubmitFormLoading.value = true;
       const response = await api.post("submissions", agreementData);
-      isSubmitted.value = true;
       
       return response.data?.data;
     } catch (error) {
@@ -85,7 +83,6 @@ export const useSubmissionsStore = defineStore("submissions", () => {
   };
 
   return {
-    isSubmitted,
     student_info,
     isGetFormLoading,
     isSubmitFormLoading,

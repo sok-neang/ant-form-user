@@ -13,7 +13,7 @@
         <p class="text-muted mb-4 fs-6">
           ប្រសិនបើអ្នកគិតថានេះកើតឡើងដោយកំហុសណាមួយ សូមទំនាក់ទំនងទៅកាន់ការងារដែលផ្តល់ទម្រង់បែបបទនេះដល់អ្នក។
         </p>
-        <a href="#" class="text-decoration-none fw-semibold link-custom fs-6">
+        <a target="_blank" href="https://t.me/ANT_Training" class="text-decoration-none fw-semibold link-custom fs-6">
           ទាក់ទងមកកាន់ពួកយើងឥឡូវ
         </a>
       </div>

@@ -360,7 +360,7 @@
             </div>
             <div class="row">
               <div class="col-12">
-                <BaseButton class="w-100 btn-custom" type="submit"
+                <BaseButton :loading="submissionsStore.isSubmitFormLoading" class="w-100 btn-custom" type="submit"
                   >បញ្ជូន</BaseButton
                 >
               </div>

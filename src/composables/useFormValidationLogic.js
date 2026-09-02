@@ -163,8 +163,6 @@ export function useFormValidationLogic(formData) {
         };
 
         await submissionsStore.Final_Submission(payload);
-        console.log("Form Data Submitted");
-        console.log(submissionsStore.isSubmitted)
         router.push({ name: 'form-submitted' });
       } catch (error) {
         alert("ការបញ្ជូនទិន្នន័យមិនបានជោគជ័យទេ។ សូមព្យាយាមម្តងទៀត។");

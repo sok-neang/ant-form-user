@@ -72,7 +72,6 @@ function showAlert(message, type = "error") {
 }
 
 async function handleGoogleLogin(response) {
-  console.log(response);
   try {
     alert.value.message = "";
     const res = await authStore.GoogleLogin(response.credential);

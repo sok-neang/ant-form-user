@@ -21,7 +21,7 @@
           
           <hr class="my-4 border-light-subtle">
           
-          <a href="#" class="text-decoration-none fw-semibold link-custom fs-7">ទំនាក់ទំនងមកកាន់ពួកយើងឥឡូវ</a>
+          <a target="_blank" href="https://t.me/ANT_Training" class="text-decoration-none fw-semibold link-custom fs-7">ទំនាក់ទំនងមកកាន់ពួកយើងឥឡូវ</a>
         </div>
       </div>
     </div>
