@@ -60,16 +60,6 @@ export function useFormSubmissionLogic() {
         if (p.includes('MOBILE') || p === 'mobile') return 'MOBILE_APP';
         return p.toUpperCase();
       };
-      const mapUniversity = (uId, uOther) => {
-        if (uId) return uId.toString().toLowerCase();
-        if (!uOther) return '';
-        const lower = uOther.toLowerCase();
-        if (lower.includes('technology') || lower.includes('itc')) return 'itc';
-        if (lower.includes('royal university') || lower.includes('rupp')) return 'rupp';
-        if (lower.includes('law and economics') || lower.includes('rule')) return 'rule';
-        if (lower.includes('management') || lower.includes('num')) return 'num';
-        return '';
-      };
 
       const transcriptFile = files.find(f => f.fileType === 'TRANSCRIPT');
       const photoFile = files.find(f => f.fileType === 'PHOTO');
@@ -85,7 +75,6 @@ export function useFormSubmissionLogic() {
       formData.photo = photoFile ? photoFile.fileUrl : null;
       formData.transcript = transcriptFile ? transcriptFile.fileUrl : null;
       formData.universityId = student.universityId || null;
-      formData.universityOther = mapUniversity(student.universityId, student.universityOther);
 
       formData.educationLevel = submission?.educationLevel ? submission.educationLevel.toLowerCase() : '';
       formData.yearOfStudy = mapYear(submission?.yearOfStudy);

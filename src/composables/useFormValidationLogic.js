@@ -28,6 +28,21 @@ export function useFormValidationLogic(formData) {
       errors[field] = emailResult.isValid ? "" : emailResult.message;
       return emailResult.isValid;
     }
+
+    if (field === 'telegramUsername') {
+      const val = formData[field];
+      if (!val) {
+        errors[field] = msg;
+        return false;
+      }
+      if (!val.trim().startsWith('@')) {
+        errors[field] = 'ឈ្មោះអ្នកប្រើប្រាស់ Telegram ត្រូវតែចាប់ផ្តើមដោយសញ្ញា @ (ឧទាហរណ៍ @Ant_training)';
+        return false;
+      }
+      errors[field] = '';
+      return true;
+    }
+
     return validateField(field, formData[field], msg);
   };
 
@@ -164,9 +179,10 @@ export function useFormValidationLogic(formData) {
         };
 
         await submissionsStore.Final_Submission(payload);
-        router.push({ name: 'form-submitted' });
+        submissionsStore.setSubmitted(true);
+        router.push('/form-submitted');
       } catch (error) {
-        alert("ការបញ្ជូនទិន្នន័យមិនបានជោគជ័យទេ។ សូមព្យាយាមម្តងទៀត។");
+        console.log("ការបញ្ជូនទិន្នន័យមិនបានជោគជ័យទេ។ សូមព្យាយាមម្តងទៀត។");
       }
     } else {
       setTimeout(() => {

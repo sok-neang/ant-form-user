@@ -62,6 +62,7 @@
                   v-model="formData.telegramUsername"
                   :label="questions[1].text"
                   :type="questions[1].type"
+                  placeholder="@Ant_Training"
                   :error="errors.telegramUsername"
                   @blur="handleValidate('telegramUsername')"
                 />
@@ -358,7 +359,6 @@
             <div class="row">
               <div class="col-12">
                 <BaseButton 
-                  :disabled="!isValid || submissionsStore.isSubmitFormLoading" 
                   :loading="submissionsStore.isSubmitFormLoading" 
                   variant="primary" 
                   class="w-100" 
@@ -402,9 +402,9 @@ onMounted(async () => {
     
     await submissionsStore.GetForm_DraftData();
   } catch (error) {
-    console.error("Failed to load form data:", error);
 
     if (error.status === 400) {
+      submissionsStore.setSubmitted(true);
       router.push({ name: "form-submitted" });
       return;
     }

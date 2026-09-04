@@ -29,6 +29,7 @@ export const useAuthStore = defineStore("auth", () => {
   const clearAuth = () => {
     isAuthenticated.value = false;
     localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("isSubmitted");
   };
 
   return {

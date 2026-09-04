@@ -7,6 +7,16 @@ export const useSubmissionsStore = defineStore("submissions", () => {
   const isGetFormLoading = ref(false);
   const isSubmitFormLoading = ref(false);
   const isUpdateFormLoading = ref(false);
+  const isSubmitted = ref(!!localStorage.getItem("isSubmitted"));
+
+  const setSubmitted = (value) => {
+    isSubmitted.value = value;
+    if (value) {
+      localStorage.setItem("isSubmitted", "true");
+    } else {
+      localStorage.removeItem("isSubmitted");
+    }
+  };
 
   const GetForm_DraftData = async () => {
     try {
@@ -84,7 +94,9 @@ export const useSubmissionsStore = defineStore("submissions", () => {
     isGetFormLoading,
     isSubmitFormLoading,
     isUpdateFormLoading,
+    isSubmitted,
 
+    setSubmitted,
     GetForm_DraftData,
     Update_Submission,
     File_Submission,

@@ -82,7 +82,7 @@ async function handleGoogleLogin(response) {
       router.push("/form-request");
     }, 1500);
   } catch (error) {
-    showAlert("គណនី Google ត្រូវបានប្រើប្រាស់ សូមព្យាយាមចូលប្រើប្រាស់គណនីផ្សេងទៀត");
+    showAlert("គណនី Google ត្រូវបានប្រើប្រាស់រួចហើយ សូមព្យាយាមចូលប្រើប្រាស់គណនី Google ផ្សេងទៀត");
   }
 }
 
