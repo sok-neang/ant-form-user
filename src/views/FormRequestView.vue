@@ -289,9 +289,6 @@
                 />
               </div>
               <div class="col-12 mb-5">
-                <div v-if="formData.photo">
-                  <img :src="formData.photo" class="img-thumbnail" alt="" />
-                </div>
                 <BaseFileUpload
                   v-model="formData.photo"
                   :label="questions[24].text"
@@ -360,9 +357,14 @@
             </div>
             <div class="row">
               <div class="col-12">
-                <BaseButton :loading="submissionsStore.isSubmitFormLoading" class="w-100 btn-custom" type="submit"
-                  >បញ្ជូន</BaseButton
-                >
+                <BaseButton 
+                  :disabled="!isValid || submissionsStore.isSubmitFormLoading" 
+                  :loading="submissionsStore.isSubmitFormLoading" 
+                  variant="primary" 
+                  class="w-100" 
+                  type="submit">
+                  បញ្ជូន
+                </BaseButton>
               </div>
             </div>
           </form>

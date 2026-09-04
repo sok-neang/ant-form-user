@@ -19,7 +19,7 @@ const router = createRouter({
       name: "form-request",
       component: FormRequest,
       meta: {
-        title: "Form Request",
+        title: "ពាក្យស្នើរសុំ",
       },
     },
     {
@@ -27,7 +27,7 @@ const router = createRouter({
       name: "form-submitted",
       component: FormSubmitted,
       meta: {
-        title: "Form Submitted",
+        title: "ពាក្យស្នើរសុំបានបញ្ជូន",
       },
     },
     {
@@ -35,7 +35,7 @@ const router = createRouter({
       name: "form-resubmit",
       component: FormResubmit,
       meta: {
-        title: "Form Resubmit",
+        title: "ពាក្យស្នើរសុំ",
       },
     },
 
@@ -44,7 +44,7 @@ const router = createRouter({
       name: "login",
       component: Login,
       meta: {
-        title: "Login",
+        title: "ចូលគណនី",
       },
     },
 
@@ -53,7 +53,7 @@ const router = createRouter({
       name: "expired-link",
       component: ExpiredLink,
       meta: {
-        title: "Form Expired",
+        title: "ពាក្យស្នើរសុំផុតកំណត់",
       },
     },
 
@@ -69,5 +69,12 @@ const router = createRouter({
 });
 
 router.beforeEach(authGuard);
+router.afterEach((to) => {
+  const title = to.meta.title;
+
+  document.title = title
+    ? `${title} | ANT-Form`
+    : "ANT Scholarship";
+});
 
 export default router;

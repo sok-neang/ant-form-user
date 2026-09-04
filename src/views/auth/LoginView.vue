@@ -71,7 +71,7 @@ function showAlert(message, type = "error") {
   alert.value = { message, type };
 }
 
-async function handleGoogleLogin(response) {
+async function handleGoogleLogin(response) {  
   try {
     alert.value.message = "";
     const res = await authStore.GoogleLogin(response.credential);
@@ -180,7 +180,7 @@ onMounted(() => {
 .custom-google-wrapper {
   position: relative;
   width: 250px;
-  height: 40px; /* Standard Google button height */
+  height: 40px; 
 }
 
 .custom-google-btn {
@@ -221,5 +221,9 @@ onMounted(() => {
   opacity: 0.001;
   z-index: 10;
   overflow: hidden;
+}
+
+.spinner-border{
+  color: var(--primary-color);
 }
 </style>

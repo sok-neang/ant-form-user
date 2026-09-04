@@ -54,20 +54,20 @@
 }
 
 .btn-primary {
-  background-color: var(--primary-color, #357867);
-  border: 1px solid var(--primary-color, #357867);
-  color: white;
+  background-color: var(--primary-color, #357867) !important;
+  border: 1px solid var(--primary-color, #357867) !important;
+  color: white !important;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: var(--primary-color-600, #2ab896);
-  border-color: var(--primary-color-600, #2ab896);
-  color: white;
+  background-color: var(--secondary-color) !important;
+  border-color: var(--secondary-color) !important;
+  color: white !important;
 }
 
 .btn-primary:disabled {
-  background-color: #6c9a8e;
-  border-color: #6c9a8e;
+  background-color: #6c9a8e !important;
+  border-color: #6c9a8e !important;
   opacity: 0.7;
   cursor: not-allowed;
 }   

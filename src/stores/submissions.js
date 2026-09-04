@@ -10,12 +10,9 @@ export const useSubmissionsStore = defineStore("submissions", () => {
 
   const GetForm_DraftData = async () => {
     try {
-      const token = localStorage.getItem("token");
       isGetFormLoading.value = true;
-      const response = await api.get("access/form", {
-        params: { token }
-      });
-      
+      const response = await api.get("access/form");
+
       const data = response.data?.data;
       student_info.value = data;
 
@@ -60,7 +57,7 @@ export const useSubmissionsStore = defineStore("submissions", () => {
     try {
       isSubmitFormLoading.value = true;
       const response = await api.post("submissions", agreementData);
-      
+
       return response.data?.data;
     } catch (error) {
       throw error.response || error;
@@ -70,7 +67,7 @@ export const useSubmissionsStore = defineStore("submissions", () => {
   };
 
 
-    const Delete_File = async (id) => {
+  const Delete_File = async (id) => {
     try {
       isSubmitFormLoading.value = true;
       const response = await api.delete(`submissions/draft/files/${id}`);

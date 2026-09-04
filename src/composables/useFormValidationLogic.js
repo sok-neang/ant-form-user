@@ -47,6 +47,7 @@ export function useFormValidationLogic(formData) {
       }
       console.log(`${fileType} auto-saved successfully`);
     } catch (error) {
+      console.log(error);
       if (error.response.message.includes("Invalid file type")) {
         errors[field] = "សូមបញ្ជូលឯកសារជាទម្រង់ PDF, JPG, PNG ឬ WEBP ប៉ុណ្ណោះ";
         formData[field] = null;
@@ -65,12 +66,12 @@ export function useFormValidationLogic(formData) {
     try {
       const files = submissionsStore.student_info?.files || [];
       const file = files.find(f => f.fileType === fileType);
-      
+
       if (file && file.id) {
         await submissionsStore.Delete_File(file.id);
         submissionsStore.student_info.files = files.filter(f => f.id !== file.id);
       }
-      
+
       formData[field] = null;
       errors[field] = field === 'photo' ? 'សូមបញ្ជូលរូបភាព' : 'សូមបញ្ជូលឯកសារ';
     } catch (error) {

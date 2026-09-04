@@ -3,10 +3,12 @@ import { ref } from "vue";
 import api from "@/api/api";
 
 export const useAuthStore = defineStore("auth", () => {
-  const isAuthenticated = ref(!!localStorage.getItem("token"));
+  const isAuthenticated = ref(!!localStorage.getItem("isAuthenticated"));
   const isLoginGoogle = ref(false);
 
   const GoogleLogin = async (credential) => {
+    console.log(credential);
+
     try {
       isLoginGoogle.value = true;
       const response = await api.post("/access/google", {
@@ -14,7 +16,7 @@ export const useAuthStore = defineStore("auth", () => {
       });
       const data = response.data?.data;
 
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("isAuthenticated", "true");
       isAuthenticated.value = true;
       return data;
     } catch (err) {
@@ -26,7 +28,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   const clearAuth = () => {
     isAuthenticated.value = false;
-    localStorage.removeItem("token");
+    localStorage.removeItem("isAuthenticated");
   };
 
   return {

@@ -20,6 +20,16 @@ export async function authGuard(to) {
         return { name: "form-request" };
     }
 
+    // If user not yet submitted form and try to go to form submitted
+    if (authStore.isAuthenticated && to.name === "form-submitted" && !submissionsStore.isSubmitted) {
+        return { name: "form-request" };
+    }
+
+    // If user already submitted form and try to go to form request
+    if (authStore.isAuthenticated && to.name === "form-request" && submissionsStore.isSubmitted) {
+        return { name: "form-submitted" };
+    }
+
     return true;
 
 }
